@@ -4,7 +4,6 @@ const Tab = () => {
 
   return (
     <>
-    <div className={styles.title}>Hello</div>
     </>
   )
 }

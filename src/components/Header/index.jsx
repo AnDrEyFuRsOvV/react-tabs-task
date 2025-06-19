@@ -1,11 +1,13 @@
+import TabsBlock from "../TabsBlock"
 import styles from "./Header.module.scss"
 
 const Header = () => {
 
   return (
-    <>
-    <div className={styles.title}>Hello</div>
-    </>
+    <header className={styles.header}>
+        <div className={styles.header__top}></div>
+        <TabsBlock />
+    </header>
   )
 }
 

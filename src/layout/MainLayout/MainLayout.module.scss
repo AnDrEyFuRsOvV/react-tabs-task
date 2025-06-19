@@ -1,0 +1,16 @@
+.main__section{
+    display: flex;
+    width: 100%;
+}
+.main__content{
+    width: 100%;
+}
+
+.content{
+    border: 1px solid #AEB6CE33;
+    border-radius: 6px;
+    background-color: #fff;
+    margin: 20px;
+    width: calc(100% - 40px);
+    height: calc(100% - 160px);
+}
