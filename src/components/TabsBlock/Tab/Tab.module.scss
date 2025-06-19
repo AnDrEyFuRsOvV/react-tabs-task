@@ -1,0 +1,40 @@
+.tabs__item {
+    display: flex;
+    align-items: center;
+    padding: 17px 20px;
+    width: 100%;
+    cursor: pointer;
+    position: relative;
+    transition: all .3s;
+    &::after{
+        content: "";
+        width: 1px;
+        height: 16px;
+        background-color: #AEB6CE33;
+        position: absolute;
+        right: 0;
+    }
+    &:hover{
+        background-color: #7F858D;
+        .name__tab{
+            color: #fff;
+        }
+    }
+}
+
+
+.tabs__item:hover :global(.material-icons.icon) {
+  color: #fff !important;
+}
+
+
+
+
+.name__tab {
+    font-size: 14px;
+    font-weight: 500;
+    color: #7F858D;
+    white-space: nowrap;
+
+    
+}
