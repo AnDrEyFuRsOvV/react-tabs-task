@@ -1,4 +1,39 @@
-.tabs__block{
+.tabs__block {
     display: flex;
     overflow: hidden;
+
+}
+
+.dragging {
+
+    :global(.name__tab),
+    :global(.icon) {
+        color: #fff !important;
+    }
+    .name__tab{
+        color: #fff !important;
+    }
+}
+
+
+.tabs__block_content{
+    display: flex;
+}
+
+.pinned{
+    cursor: pointer;
+    padding: 16px 20px;
+    display: block;
+    border: 1px solid #AEB6CE33;
+    border-bottom: 0px;
+    & > span{
+        margin-right: 0!important;
+        display: block;
+        width: 16px;
+    }
+    &:hover{
+        border-top: 2px solid #7F858D;
+        border-radius: 1px 1px 0 0;
+        background-color: #F1F5F8;
+    }
 }

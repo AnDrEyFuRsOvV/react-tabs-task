@@ -1,9 +1,11 @@
-import { useState } from "react";
-import styles from "./TabsBlock.module.scss"
+import { useRef, useState, useEffect } from "react";
+import styles from "./TabsBlock.module.scss";
 import Tab from "./Tab";
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
+const LOCAL_STORAGE_KEY = "user-tabs";
 
-const myTabs = [
+const defaultTabs = [
     { id: 0, name: "Dashboard", url: "/", pinned: false, order: 0, visible: true, icon: "dashboard" },
     { id: 1, name: "Banking", url: "/banking", pinned: false, order: 1, visible: true, icon: "account_balance" },
     { id: 2, name: "Accounting", url: "/accounting", pinned: false, order: 2, visible: true, icon: "attach_money" },
@@ -23,22 +25,77 @@ const myTabs = [
     { id: 16, name: "Warenbestand", url: "/warenbestand", pinned: false, order: 16, visible: true, icon: "fullscreen_portrait" },
 ];
 
-
+const reorder = (list, startIndex, endIndex) => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+    return result.map((tab, index) => ({ ...tab, order: index }));
+};
 
 const TabsBlock = () => {
+    const [tabs, setTabs] = useState([]);
 
-    const [tabs, setTabs] = useState(myTabs);
+    useEffect(() => {
+        const storedTabs = localStorage.getItem(LOCAL_STORAGE_KEY);
+        if (storedTabs) {
+            try {
+                const parsedTabs = JSON.parse(storedTabs);
+                parsedTabs.sort((a, b) => a.order - b.order);
+                setTabs(parsedTabs);
+            } catch {
+                setTabs(defaultTabs);
+            }
+        } else {
+            setTabs(defaultTabs);
+        }
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(tabs));
+    }, [tabs]);
+
+    const onDragEnd = (result) => {
+        if (!result.destination) return;
+        const newTabs = reorder(tabs, result.source.index, result.destination.index);
+        setTabs(newTabs);
+    };
 
     return (
-        <ul className={styles.tabs__block}>
-            {tabs.map(tab => (
-                <Tab
-                    key={tab.id}
-                    tab={tab}
-                />
-            ))}
-        </ul>
-    )
-}
+        <div className={styles.tabs__block_content}>
+            <DragDropContext onDragEnd={onDragEnd}>
+                <Droppable droppableId="tabs-droppable" direction="horizontal">
+                    {(provided) => (
+                        <ul
+                            className={styles.tabs__block}
+                            {...provided.droppableProps}
+                            ref={provided.innerRef}
+                        >
+                            {tabs.map((tab, index) => (
+                                <Draggable key={tab.id.toString()} draggableId={tab.id.toString()} index={index}>
+                                    {(provided, snapshot) => (
+                                        <li
+                                            className={`${styles.tabs__item} ${snapshot.isDragging ? styles.dragging : ''}`}
+                                            ref={provided.innerRef}
+                                            {...provided.draggableProps}
+                                            {...provided.dragHandleProps}
+                                            style={{
+                                                ...provided.draggableProps.style,
+                                                backgroundColor: snapshot.isDragging ? '#7F858D' : 'transparent',
+                                                color: snapshot.isDragging ? '#ffffff' : '#7F858D'
+                                            }}
+                                        >
+                                            <Tab key={tab.id} tab={tab} />
+                                        </li>
+                                    )}
+                                </Draggable>
+                            ))}
+                            {provided.placeholder}
+                        </ul>
+                    )}
+                </Droppable>
+            </DragDropContext>
+        </div>
+    );
+};
 
-export default TabsBlock
+export default TabsBlock;

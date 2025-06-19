@@ -1,5 +1,6 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import styles from "./Tab.module.scss"
+
 
 const Tab = ({ tab }) => {
 
@@ -11,11 +12,14 @@ const Tab = ({ tab }) => {
         navigate(url)
     }
 
+    const location = useLocation();
+    const isActive = location.pathname === url;
+
     return (
-        <li className={styles.tabs__item} onClick={() => handleClick(url)}>
+        <div className={`${styles.tabs__item} ${isActive ? styles.active : ""}`} onClick={() => handleClick(url)}>
             <span className="material-icons icon">{icon}</span>
-            <p className={styles.name__tab}>{name}</p>
-        </li>
+            <p className="name__tab">{name}</p>
+        </div>
     )
 }
 

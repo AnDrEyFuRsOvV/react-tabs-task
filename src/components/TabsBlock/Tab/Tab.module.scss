@@ -5,8 +5,8 @@
     width: 100%;
     cursor: pointer;
     position: relative;
-    transition: all .3s;
-    &::after{
+
+    &::after {
         content: "";
         width: 1px;
         height: 16px;
@@ -14,27 +14,62 @@
         position: absolute;
         right: 0;
     }
-    &:hover{
-        background-color: #7F858D;
-        .name__tab{
-            color: #fff;
+
+    &:hover {
+        background-color: #F1F5F8;
+        border-top: 2px solid #4690E2;
+        border-radius: 1px 1px 0 0;
+
+        :global(.name__tab) {
+            color: #343434;
         }
+
+        :global(.material-icons.icon) {
+            color: #343434;
+        }
+        &::after {
+        content: "";
+        width: 0px;
+    }
+    }
+
+
+}
+
+
+
+.tabs__item {
+    :global(.name__tab) {
+        transition: all .3s;
+        font-size: 14px;
+        font-weight: 500;
+        color: #7F858D;
+        white-space: nowrap;
+    }
+
+    :global(.material-icons.icon) {
+        color: #7F858D;
     }
 }
 
 
-.tabs__item:hover :global(.material-icons.icon) {
-  color: #fff !important;
-}
 
 
 
+.tabs__item.active {
+    background-color: #F1F5F8;
+    border-top: 2px solid #4690E2;
+    border-radius: 1px 1px 0 0;
 
-.name__tab {
-    font-size: 14px;
-    font-weight: 500;
-    color: #7F858D;
-    white-space: nowrap;
+    :global(.name__tab) {
+        color: #343434;
+    }
 
-    
+    :global(.material-icons.icon) {
+        color: #343434;
+    }
+    &::after {
+        content: "";
+        width: 0px;
+    }
 }
