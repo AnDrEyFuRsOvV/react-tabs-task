@@ -1,0 +1,7 @@
+@use './reset';
+@use './var' as *;
+@use './fonts';
+
+body {
+    font-family: 'Poppins', sans-serif;
+}
