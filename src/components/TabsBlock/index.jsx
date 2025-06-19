@@ -60,6 +60,49 @@ const TabsBlock = () => {
         setTabs(newTabs);
     };
 
+    const [activeMenuPin, setActiveMenuPin] = useState(null);
+
+    const handleOpenMenuPin = (e, id) => {
+        e.preventDefault();
+        setActiveMenuPin(id);
+        e.stopPropagation();
+    }
+
+    useEffect(() => {
+        const closeMenu = () => {
+            setActiveMenuPin(null);
+        };
+
+        if (activeMenuPin !== null) {
+            document.addEventListener("mouseup", closeMenu); // замість mousedown
+        }
+
+        return () => {
+            document.removeEventListener("mouseup", closeMenu);
+        };
+    }, [activeMenuPin]);
+
+    const togglePin = (id) => {
+        setTabs((prevTabs) => {
+            const updatedTabs = prevTabs.map((tab) => {
+                if (tab.id === id) {
+                    return { ...tab, pinned: !tab.pinned };
+                }
+                return tab;
+            });
+
+            const sortedTabs = [
+                ...updatedTabs.filter(t => t.pinned).sort((a, b) => a.order - b.order),
+                ...updatedTabs.filter(t => !t.pinned).sort((a, b) => a.order - b.order),
+            ].map((tab, i) => ({ ...tab, order: i }));
+
+            return sortedTabs;
+        });
+
+        setActiveMenuPin(null);
+    };
+
+
     return (
         <div className={styles.tabs__block_content}>
             <DragDropContext onDragEnd={onDragEnd}>
@@ -71,7 +114,7 @@ const TabsBlock = () => {
                             ref={provided.innerRef}
                         >
                             {tabs.map((tab, index) => (
-                                <Draggable key={tab.id.toString()} draggableId={tab.id.toString()} index={index}>
+                                <Draggable key={tab.id.toString()} draggableId={tab.id.toString()} index={index} isDragDisabled={tab.pinned}>
                                     {(provided, snapshot) => (
                                         <li
                                             className={`${styles.tabs__item} ${snapshot.isDragging ? styles.dragging : ''}`}
@@ -84,7 +127,7 @@ const TabsBlock = () => {
                                                 color: snapshot.isDragging ? '#ffffff' : '#7F858D'
                                             }}
                                         >
-                                            <Tab key={tab.id} tab={tab} />
+                                            <Tab key={tab.id} tab={tab} activeMenuPin={activeMenuPin} onContextMenu={handleOpenMenuPin} onTogglePin={() => togglePin(tab.id)} />
                                         </li>
                                     )}
                                 </Draggable>

@@ -16,6 +16,7 @@
     }
 
     &:hover {
+        margin-top: 0;
         background-color: #F1F5F8;
         border-top: 2px solid #4690E2;
         border-radius: 1px 1px 0 0;
@@ -27,10 +28,11 @@
         :global(.material-icons.icon) {
             color: #343434;
         }
+
         &::after {
-        content: "";
-        width: 0px;
-    }
+            content: "";
+            width: 0px;
+        }
     }
 
 
@@ -39,6 +41,8 @@
 
 
 .tabs__item {
+    margin-top: 2px;
+
     :global(.name__tab) {
         transition: all .3s;
         font-size: 14px;
@@ -53,10 +57,55 @@
 }
 
 
+.pinned__menu {
+    position: absolute;
+    bottom: -55px;
+    left: -55px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    border: 1px solid #AEB6CE33;
+    z-index: 1;
+    min-width: 175px;
+    border-radius: 6px;
+    justify-content: center;
+    background-color: #fff;
+    box-shadow: 0px 6px 30px rgba(123, 127, 145, 0.07);
+    opacity: 0;
+    transform: translateY(-100%);
+    transition: all .3s;
+    cursor: text;
 
+    &>span {
+        color: #343434 !important;
+        margin-right: 5px !important;
+        margin-top: -2px !important;
+    }
+
+    &>p {
+        color: #343434 !important;
+    }
+}
+
+.tabs__item.pinned {
+    z-index: 10;
+    &:hover {
+        margin-top: 0;
+        border-top: 2px solid #7F858D;
+        border-radius: 1px 1px 0 0;
+        .pinned__menu {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0%);
+            z-index: 11;
+        }
+        
+    }
+}
 
 
 .tabs__item.active {
+    margin-top: 0;
     background-color: #F1F5F8;
     border-top: 2px solid #4690E2;
     border-radius: 1px 1px 0 0;
@@ -68,8 +117,51 @@
     :global(.material-icons.icon) {
         color: #343434;
     }
+
     &::after {
         content: "";
         width: 0px;
     }
+}
+
+.tab__item {
+    position: relative;
+}
+
+.menu__text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu__item {
+    position: absolute;
+    bottom: -30px;
+    left: 50px;
+    padding: 10px;
+    border: 1px solid #AEB6CE33;
+    z-index: 9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 155px;
+    border-radius: 6px;
+    box-shadow: 0px 6px 30px rgba(123, 127, 145, 0.07);
+    background-color: #fff;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-100%);
+    transition: all .3s;
+    cursor: pointer;
+
+    &.active {
+        visibility: visible;
+        opacity: 1;
+        transform: translateY(0%);
+    }
+}
+
+:global(.material-icons.icon.pinned) {
+    margin-right: 0;
+
 }
